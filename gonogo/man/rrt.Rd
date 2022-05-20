@@ -2,7 +2,7 @@
 % Please edit documentation in R/rrt.R
 \name{rrt}
 \alias{rrt}
-\title{Calculates reaction time (in seconds) for pressing a specific key}
+\title{Calculates reaction time for pressing a prespecified key}
 \usage{
 rrt(choiceKeys = c(" "))
 }
@@ -13,5 +13,5 @@ rrt(choiceKeys = c(" "))
 Response (key pressed) and reaction time in seconds
 }
 \description{
-Calculates reaction time (in seconds) for pressing a specific key
+Calculates reaction time for pressing a prespecified key
 }
