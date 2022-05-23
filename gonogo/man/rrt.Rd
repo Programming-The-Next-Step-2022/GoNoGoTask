@@ -7,10 +7,10 @@
 rrt(choiceKeys = c(" "))
 }
 \arguments{
-\item{choiceKeys}{A character vector specifying the key(s) for which reaction time is recorded}
+\item{choiceKeys}{A character vector specifying the choice key(s) for which the reaction time is recorded}
 }
 \value{
-Response (key pressed) and reaction time in seconds
+Response (either choice key pressed, or NA) and reaction time in seconds (NA if choice key not pressed)
 }
 \description{
 Calculates reaction time for pressing a prespecified key
