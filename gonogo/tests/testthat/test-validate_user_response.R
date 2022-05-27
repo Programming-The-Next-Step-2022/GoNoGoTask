@@ -2,7 +2,7 @@ library(gonogo)
 
 context('Validate_user_response functionality')
 
-test_that('validate_user_response return value depends on whether choice and choiceKeys match' {
+test_that('validate_user_response return value depends on whether choice and choiceKeys match') {
 
   random_letters <- sample(x = letters, size = 3, replace = FALSE)
   choice_keys <- random_letters[1:2]
