@@ -4,13 +4,15 @@
 \alias{rrt}
 \title{Calculates reaction time for pressing a prespecified key}
 \usage{
-rrt(choiceKeys = c(" "))
+rrt(choiceKeys = c(" "), interval = 0.6)
 }
 \arguments{
-\item{choiceKeys}{A character vector specifying the key(s) for which reaction time is recorded}
+\item{choiceKeys}{A character vector specifying the choice key(s) for which the reaction time is recorded}
+
+\item{interval}{A numeric vector of length 1 specifying the length of each trial in seconds (default is 1)}
 }
 \value{
-Response (key pressed) and reaction time in seconds
+Response (either choice key pressed, or NA) and reaction time in seconds (NA if choice key not pressed)
 }
 \description{
 Calculates reaction time for pressing a prespecified key

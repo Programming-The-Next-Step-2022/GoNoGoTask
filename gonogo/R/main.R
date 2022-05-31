@@ -1,295 +1,109 @@
-# The Go-No Go Task
 
-# ---------------
-# Load libraries
-# ---------------
+#' A Go-No Go Task in the R console
+#'
+#' @param id Either a character string specifying the participant's name, or a numeric vector of length 1 specifying the participant's id number
+#' @param n_trial Number of trials (numeric vector of length 1)
+#' @param stimuli A character vector of length 2: first element specifies the 'go' element, second stimulus specifies the 'no go' stimuls (default is c("A", "X"))
+#' @param inter Length of each trial in seconds (numeric vector of length 1) (default is 0.6)
+#' @param prb A numeric vector of length 2 specifying the probability weights for the stimuli (default is c(0.5, 0.5))
+#'
+#' @return A dataframe consisting of \emph{n_trial} rows and six columns: \emph{id} (participant's name or numeric id),  \emph{response} (response key used on the trial),  \emph{correct} (1=correct, 0=incorrect),  \emph{SDT} (responses categorised according to Signal Detection Theory),  \emph{rt} (reaction time), and  \emph{stimulus} (the stimulus shown on the trial)
+#' @export
+#'
+#' @examples
+#' p1_data <- gonogo(id = "p1", n_trial = 50, stimuli = c("T", "S"), inter = 0.6, prb = c(0.7, 0.3))
+gonogo <- function(id, n_trial, stimuli=c("A", "X"), inter=0.6,
+                   prb = c(0.5, 0.5)) {
 
-#library(magick)
-library(shiny)
-
-# -----------------
-# Create functions
-# -----------------
-
-# INPUT (probably): interval, n_trial, pin/id/person
-interval <- 0.5
-n_trial <- 20
-id <- "Milla"
-
-# Function to draw the screen
-drawScreen <- function(txt, cex=1, col="black") {
-  plot(x=NA, y=NA, xlim=c(0,1), ylim=c(0,1), xaxt="n", yaxt="n", xlab="", ylab="")
-  text(x=0.5, y=0.5, labels=txt, cex=cex)
-}
-
-# Create stimuli
-stim <- sample(x = c("A", "X"), replace = TRUE, size = n_trial)
-
-# Create stimuli (random)
-stim <- sample(x = c("A", "X"), replace = TRUE, size = n_trial)
-
-# Create dataset
-data <- data.frame(id = factor(rep(id, n_trial), levels = c(id)),
-                   response = factor(rep("", n_trial), levels = c(" ", "none")),
-                   correct = rep(100, n_trial),
-                   SDT = factor(rep("", n_trial), levels = c("hit", "miss", "falsealarm", "correctrejection")),
-                   rt = rep(100, n_trial),
-                   stimulus = factor(stim, levels = c("A", "X")))
-
-# Prints the response (spacebar press) and time it took to press it
-# Two problems: the time resets every time you press any key besides spacebar,
-# and function does not stop until it is pressed
-rrt <- function(choiceKeys=c(" ")) {
-
-  dynamic_readline <- function() {
-    while (rstudioapi::isAvailable()) {
-      input <- rstudioapi::getConsoleEditorContext()$contents
-
-      if (input != "") {
-        rstudioapi::sendToConsole("", execute = FALSE)
-        return(input)
-      }
-    }
-    readline()
+  # Check class and length of arguments
+  if (!(class(id) %in% c("character", "numeric")) || length(id) != 1) {
+    stop("id must be either a numeric vector of length 1 (pin number identifying the participant), or a character vector of length 1 (name of participant)")
+  }
+  if (class(n_trial) != "numeric" || length(n_trial) != 1) {
+    stop("n_trial must be a numeric vector of length 1")
+  }
+  if (class(stimuli) != "character" || length(stimuli) != 2) {
+    stop("stimuli must be a character vector of length 2")
+  }
+  if (class(inter) != "numeric" || length(inter) != 1) {
+    stop("inter must be a numeric vector of length 1")
+  }
+  if (class(prb) != "numeric" || length(prb) != 2 || prb[1] + prb[2] != 1) {
+    stop("prb must be a numeric vector of length 2, and its components must add up to exactly 1")
   }
 
-  repeat {
-    rt <- system.time({
-      choice <- dynamic_readline()
-    })[3]
+  # Create the randomized set of stimuli
+  stim <- sample(x = stimuli, size = n_trial, prob = prb, replace = TRUE)
 
-    if (choice %in% choiceKeys) break
-  }
-  setNames(c(choice, rt), c("response", "rt"))
-}
+  # Create the (output) dataset
+  data <- data.frame(id = factor(rep(id, n_trial), levels = c(id)),
+                     response = factor(rep("none", n_trial), levels = c(" ", "none", "space")),
+                     correct = rep(2, n_trial),
+                     SDT = factor(rep("hit", n_trial), levels = c("hit", "miss", "falsealarm", "correctrejection")),
+                     rt = rep(100, n_trial),
+                     stimulus = stim)
 
+  # Intro screens
+  drawScreen("Welcome to the Go-No Go Task!\nPress Enter to continue.", cex=1.5)
+  readline()
+  drawScreen(paste("Instructions: In this task, you will see two types of stimuli,", stimuli[1], "and\n", stimuli[2], ". When you see", stimuli[1], "you should respond as quickly as\npossible by pressing the space bar. When you see", stimuli[2], "you should\nnot respond (do not press any key). You should try to be as fast and accurate\nas possible. Press Enter to continue."),
+             cex=0.8)
+  readline()
+  drawScreen("Press Enter when you are ready to start the task.", cex=1)
+  readline()
+  drawScreen("Countdown: 3"); Sys.sleep(1)
+  drawScreen("Countdown: 2"); Sys.sleep(1)
+  drawScreen("Countdown: 1"); Sys.sleep(1)
+  drawScreen(""); Sys.sleep(0.5)
 
-# Kind of fixed?
-rrt <- function(choiceKeys=c(" ")) {
-
-  start_chunk_time <- Sys.time()
-
-  dynamic_readline <- function() {
-
-    # Create a counter variable that eventually breaks the loop
-    x <- 0
-
-    while (rstudioapi::isAvailable()) {
-      input <- rstudioapi::getConsoleEditorContext()$contents
-
-      # Add 1 to counter variable
-      x <- x + 1
-
-      if (input != "") {
-        rstudioapi::sendToConsole("", execute = FALSE)
-        return(input)
-      }
-
-      if (x == 2) {
-
-        return(NA)
-
-      }
-    }
-    readline()
+  # The for loop
+  for (i in 1:n_trial) {
+    drawScreen(stim[i], 3)
+    data[i, c("response", "rt")] <- rrt(choiceKeys = c(" "), interval = inter)
+    drawScreen(""); Sys.sleep(0.3)
   }
 
-  o_rt <- Sys.time()
+  # End screen
+  drawScreen("You finished the task. Thank you for participating!", cex=1)
 
-  start_chunk_time <- o_rt - start_chunk_time
-
-  repeat {
-    rt <- system.time({
-      choice <- dynamic_readline()
-    })[3]
-
-    if (choice %in% choiceKeys){
-
-      o_rt <- Sys.time() - o_rt - start_chunk_time
-      break
-    }
-
-    elapsed_time <- Sys.time() - o_rt
-
-    if (elapsed_time > 5) {
-      o_rt <- NA
-      break
+  # Update the dataset
+  for (i in 1:nrow(data)) {
+    if (data[i, "stimulus"] == stimuli[1] && data[i, "response"] == " ") {
+      data[i, "correct"] <- 1
+      data[i, "SDT"] <- "hit"
+    } else if (data[i, "stimulus"] == stimuli[2] && data[i, "response"] == " ") {
+      data[i, "correct"] <- 0
+      data[i, "SDT"] <- "falsealarm"
+    } else if (data[i, "stimulus"] == stimuli[1] && data[i, "response"] != " ") {
+      data[i, "correct"] <- 0
+      data[i, "SDT"] <- "miss"
+    } else {
+      data[i, "correct"] <- 1
+      data[i, "SDT"] <- "correctrejection"
     }
   }
-  setNames(c(choice, rt, o_rt), c("response", "rt", "overall"))
+
+  data$rt <- as.numeric(data$rt)
+  for (i in 1:nrow(data)) {
+    if (data$rt[i] == 100) {
+      data$rt[i] <- NA
+    }
+  }
+
+  for (i in 1:nrow(data)) {
+    if (data$response[i] == " ") {
+      data$response[i] <- "space"
+    }
+  }
+
+  print(data)
 }
 
 
-
-
-
-
-
-
-# IGNORE: screens?
-
-# Screen 1
-plot(NA, NA, xlim=c(0,1), ylim=c(0,1), xaxt="n", yaxt="n", xlab="", ylab="")
-text(x=0.5, y=0.5, labels="Welcome to the Go-No Go Task!", cex=1.5)
-
-# Screen 2: separate function for this?
-plot(NA, NA, xlim=c(0,1), ylim=c(0,1), xaxt="n", yaxt="n", xlab="", ylab="")
-text(x=0.5, y=0.5, labels="Instructions: In this task, you will see two types of stimuli, the letter A and the\nletter X. When you see the letter A, you should respond as quickly as\npossible by pressing the space bar. When you see the letter X, you should\nnot respond (do not press any key). You should try to be as fast and accurate\nas possible.",
-     cex=0.8)
-
-# Screen 3
-plot(NA, NA, xlim=c(0,1), ylim=c(0,1), xaxt="n", yaxt="n", xlab="", ylab="")
-text(x=0.5, y=0.5, labels="Press enter to start the task.", cex=1.5)
-
-# Screen 4
-plot(NA, NA, xlim=c(0,1), ylim=c(0,1), xaxt="n", yaxt="n", xlab="", ylab="")
-text(x=0.5, y=0.5, labels="A", cex=3)
-
-# Screen 5
-plot(NA, NA, xlim=c(0,1), ylim=c(0,1), xaxt="n", yaxt="n", xlab="", ylab="")
-text(x=0.5, y=0.5, labels="X", cex=3)
-
-# Screen 6
-plot(NA, NA, xlim=c(0,1), ylim=c(0,1), xaxt="n", yaxt="n", xlab="", ylab="")
-text(x=0.5, y=0.5, labels="You finished the task. Thank you for participating!", cex=1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# SIMULATION?
-
-# -------------
-# Load stimuli
-# -------------
-
-#A <- list(img = image_read("https://www.iconsdb.com/icons/download/blue/circle-256.jpg"),
-#                name = "A")
-# print(A)
-
-#X <- list(img = image_read("https://www.iconsdb.com/icons/download/red/circle-256.jpg"),
-#                 name = "X")
-# print(X)
-
-#stimuli <- list(go = A, nogo = X) # not sure if this is the best format
-
-# -------------------------------------------------
-# Create a while loop that is not interactive (yet)
-# -------------------------------------------------
-
-# Create an empty file that records ALL answers?
-# Create an empty file that records answer given that round?
-
-# Prespecify parameters
-rounds <- 10
-time <- .5 # not useful yet but we need to set the interval between rounds if no response is given
-stimuli <- c("A", "X")
-stimulus <- sample(x = stimuli, size = 1)
-response <- sample(x = c("response", "noresponse"), size = 1)
-rt <- sample(x = c(seq(from = 0, to = .5, by = .005), rep(1,100)), size = 1)
-output_example <- data.frame(correct = rep(x = 0, times = rounds),
-                             SDT = rep(x = 0, times = rounds),
-                             rt = rep(x = 0, times = rounds),
-                             stimulus = rep(x = 0, times = rounds))
-
-for (round in 1:rounds) {
-
-  # Randomly assign stimulus shown for that round
-  # stimulus <- sample(x = stimuli, size = 1)
-
-  # Randomly assign response (THIS HAS TO BE PARTICIPANT'S RESPONSE / interactive)
-  # response <- sample(x = c("response", "noresponse"), size = 1)
-  # Randomly assign reaction time (THIS HAS TO BE PARTICIPANT'S RESPONSE TIME / interactive)
-  # rt <- sample(x = c(seq(from = 0, to = .5, by = .005), rep(1,100)), size = 1)
-  # rt = 1 here signifies no reaction; not sure if the response variable is necessary?
-
-  if (stimulus == "A" && rt <= .5) {
-
-    # Store output
-    output_example$correct[round] <- 1
-    output_example$SDT[round] <- "hit"
-    output_example$rt[round] <- rt
-    output_example$stimulus[round] <- "go"
-
-    # Assign new round (not necessary when I figure out the actual interactive bit)
-    stimulus <- sample(x = stimuli, size = 1)
-    rt <- sample(x = c(seq(from = 0, to = .5, by = .005), rep(1,100)), size = 1)
-    # round <- round + 1
-
-  } else if (stimulus == "A" && rt > .5) {
-
-    # Store output
-    output_example$correct[round] <- 0
-    output_example$SDT[round] <- "miss"
-    output_example$rt[round] <- rt
-    output_example$stimulus[round] <- "go"
-
-    # Assign new round (not necessary when I figure out the actual interactive bit)
-    stimulus <- sample(x = stimuli, size = 1)
-    rt <- sample(x = c(seq(from = 0, to = .5, by = .005), rep(1,100)), size = 1)
-    # round <- round + 1
-
-  } else if (stimulus == "X" && rt <= .5) {
-
-    # Store output
-    output_example$correct[round] <- 0
-    output_example$SDT[round] <- "falsealarm"
-    output_example$rt[round] <- rt
-    output_example$stimulus[round] <- "nogo"
-
-    # Assign new round (not necessary when I figure out the actual interactive bit)
-    stimulus <- sample(x = stimuli, size = 1)
-    rt <- sample(x = c(seq(from = 0, to = .5, by = .005), rep(1,100)), size = 1)
-    # round <- round + 1
-
-  } else if (stimulus == "X" && rt > .5) {
-
-    # Store output
-    output_example$correct[round] <- 1
-    output_example$SDT[round] <- "correctrejection"
-    output_example$rt[round] <- rt
-    output_example$stimulus[round] <- "nogo"
-
-    # Assign new round (not necessary when I figure out the actual interactive bit)
-    stimulus <- sample(x = stimuli, size = 1)
-    rt <- sample(x = c(seq(from = 0, to = .5, by = .005), rep(1,100)), size = 1)
-    # round <- round + 1
-
-  }
-
-  # End of the loop
-  # print(output_example)
-
-}
-
-print(output_example)
-
-
-
-
-
-
+# Ideas?
+# different stimuli: photos, characters, numbers / multiple stimuli?
+# look up basic times and probabilities of go-no go tasks and set defaults
+# look up whether the trial should end when space is pressed?
+# can you break up the function into smaller bits?
+# why does rrt() give reaction times higher than the specified interval?
+# should there be some sort of lag ? what if response time leaks into the next trial?
