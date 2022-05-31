@@ -13,7 +13,7 @@
 #' @examples
 #' p1_data <- gonogo(id = "p1", n_trial = 50, stimuli = c("T", "S"), inter = 0.6, prb = c(0.7, 0.3))
 gonogo <- function(id, n_trial, stimuli=c("A", "X"), inter=0.6,
-                   prb = c(0.5, 0.5)) {
+                   prb = c(0.75, 0.25)) {
 
   # Check class and length of arguments
   if (!(class(id) %in% c("character", "numeric")) || length(id) != 1) {
@@ -102,8 +102,5 @@ gonogo <- function(id, n_trial, stimuli=c("A", "X"), inter=0.6,
 
 # Ideas?
 # different stimuli: photos, characters, numbers / multiple stimuli?
-# look up basic times and probabilities of go-no go tasks and set defaults
-# look up whether the trial should end when space is pressed?
 # can you break up the function into smaller bits?
 # why does rrt() give reaction times higher than the specified interval?
-# should there be some sort of lag ? what if response time leaks into the next trial?
