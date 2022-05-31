@@ -5,7 +5,7 @@
 \alias{gonogo}
 \title{This package contains the Go-No Go Task.}
 \usage{
-gonogo(id, n_trial, stimuli = c("A", "X"), inter = 0.6, prb = c(0.5, 0.5))
+gonogo(id, n_trial, stimuli = c("A", "X"), inter = 0.5, prb = c(0.75, 0.25))
 }
 \arguments{
 \item{id}{Either a character string specifying the participant's name, or a numeric vector of length 1 specifying the participant's id number}

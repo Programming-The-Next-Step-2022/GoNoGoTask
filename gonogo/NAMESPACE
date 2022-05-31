@@ -2,6 +2,4 @@
 
 export(drawScreen)
 export(gonogo)
-export(hello)
 export(rrt)
-export(validate_user_response)
