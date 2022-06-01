@@ -27,13 +27,16 @@ update_data <- function(data, stimuli = stimuli) {
   
   # Update the correct and SDT columns
   for (i in 1:nrow(data)) {
-    if (data[i, "stimulus"] == stimuli[1] && data[i, "response"] == "space") {
+    if (data[i, "stimulus"] == stimuli[1] &&
+        data[i, "response"] == "space") {
       data[i, "correct"] <- 1
       data[i, "SDT"] <- "hit"
-    } else if (data[i, "stimulus"] == stimuli[2] && data[i, "response"] == "space") {
+    } else if (data[i, "stimulus"] == stimuli[2] &&
+               data[i, "response"] == "space") {
       data[i, "correct"] <- 0
       data[i, "SDT"] <- "falsealarm"
-    } else if (data[i, "stimulus"] == stimuli[1] && data[i, "response"] != "space") {
+    } else if (data[i, "stimulus"] == stimuli[1] &&
+               data[i, "response"] != "space") {
       data[i, "correct"] <- 0
       data[i, "SDT"] <- "miss"
     } else {
