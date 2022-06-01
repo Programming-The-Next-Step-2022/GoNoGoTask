@@ -2,18 +2,21 @@
 % Please edit documentation in R/rrt.R
 \name{rrt}
 \alias{rrt}
-\title{Calculates reaction time for pressing a prespecified key}
+\title{Calculates the reaction time for pressing a key within a time interval}
 \usage{
 rrt(choiceKeys = c(" "), interval = 0.6)
 }
 \arguments{
-\item{choiceKeys}{A character vector specifying the choice key(s) for which the reaction time is recorded}
+\item{choiceKeys}{The key(s) for which reaction time is recorded (default is the spacebar)}
 
-\item{interval}{A numeric vector of length 1 specifying the length of each trial in seconds (default is 1)}
+\item{interval}{The interval within which the reaction time is recorded; if the key is not pressed within the interval, response is recorded as none and reaction time as a missing value (default is 0.6 seconds)}
 }
 \value{
-Response (either choice key pressed, or NA) and reaction time in seconds (NA if choice key not pressed)
+The response (either the choice key or "none"), and the rt (either reaction time in seconds or a missing value)
 }
 \description{
-Calculates reaction time for pressing a prespecified key
+Calculates the reaction time for pressing a key within a time interval
+}
+\examples{
+rrt(choiceKeys = c(" "), interval = 1.5)
 }

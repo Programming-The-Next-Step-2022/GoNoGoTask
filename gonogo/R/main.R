@@ -1,19 +1,18 @@
-
-#' A Go-No Go Task in the R console
+#' The Go-No Go Task
 #'
-#' @param id Either a character string specifying the participant's name, or a numeric vector of length 1 specifying the participant's id number
-#' @param n_trial Number of trials (numeric vector of length 1)
-#' @param stimuli A character vector of length 2: first element specifies the 'go' element, second stimulus specifies the 'no go' stimuls (default is c("A", "X"))
-#' @param inter Length of each trial in seconds (numeric vector of length 1) (default is 0.6)
-#' @param prb A numeric vector of length 2 specifying the probability weights for the stimuli (default is c(0.5, 0.5))
+#' @param id Either a character vector of length 1 specifying the participant's name, or a numeric vector of length 1 specifying a unique id number
+#' @param n_trial A numeric vector of length 1 specifying the number of trials per block (default is 40)
+#' @param n_block A numeric vector of length 1 specifying the number of blocks (default is 4)
+#' @param stimuli A character vector of length 2 specifying the Go stimulus and the No Go stimulus (in that order; default is A and X)
+#' @param inter A numeric vector of length 1 specifying the length of each trial in seconds (default is 0.6)
+#' @param prb A numeric vector of length 2 specifying the probability weights for the Go stimulus and No Go stimulus (in that order; default is 0.75 and 0.25), must add up to 1
 #'
-#' @return A dataframe consisting of \emph{n_trial} rows and six columns: \emph{id} (participant's name or numeric id),  \emph{response} (response key used on the trial),  \emph{correct} (1=correct, 0=incorrect),  \emph{SDT} (responses categorised according to Signal Detection Theory),  \emph{rt} (reaction time), and  \emph{stimulus} (the stimulus shown on the trial)
+#' @return A dataframe consisting of \emph{n_trial*n_block} rows and seven columns: \emph{id} (participant's name or numeric id),  \emph{response} (response key used on the trial),  \emph{correct} (1=correct, 0=incorrect),  \emph{SDT} (responses categorized according to Signal Detection Theory),  \emph{rt} (reaction time in seconds),  \emph{stimulus} (the stimulus shown on the trial), and \emph{block} (the number of the block)
 #' @export
 #'
 #' @examples
-#' p1_data <- gonogo(id = "p1", n_trial = 50, stimuli = c("T", "S"), inter = 0.6, prb = c(0.7, 0.3))
-gonogo <- function(id, n_trial=40, n_block=4, stimuli=c("A", "X"), inter=0.6,
-                   prb = c(0.75, 0.25)) {
+gonogo <- function(id, n_trial = 40, n_block = 4, stimuli = c("A", "X"), 
+                   inter = 0.6, prb = c(0.75, 0.25)) {
   
   # Check class and length of arguments
   if (!(class(id) %in% c("character", "numeric")) || length(id) != 1) {
@@ -32,7 +31,7 @@ gonogo <- function(id, n_trial=40, n_block=4, stimuli=c("A", "X"), inter=0.6,
     stop("inter must be a numeric vector of length 1")
   }
   if (class(prb) != "numeric" || length(prb) != 2 || prb[1] + prb[2] != 1) {
-    stop("prb must be a numeric vector of length 2, and its components must add up to exactly 1")
+    stop("prb must be a numeric vector of length 2, and its components must add up to 1")
   }
   
   # Create practice stimuli
@@ -41,7 +40,8 @@ gonogo <- function(id, n_trial=40, n_block=4, stimuli=c("A", "X"), inter=0.6,
   # Create separate dataframes for each block
   all_data <- list()
   for (j in 1:n_block) {
-    all_data[[j]] <- data.frame(id = factor(rep(id, n_trial), levels = c(id)),
+    all_data[[j]] <- data.frame(id = factor(rep(id, n_trial), 
+                                            levels = c(id)),
                                 response = factor(rep("none", n_trial), 
                                                   levels = c(" ", 
                                                              "none", 
@@ -62,94 +62,81 @@ gonogo <- function(id, n_trial=40, n_block=4, stimuli=c("A", "X"), inter=0.6,
   }
   
   # Intro screens
-  drawScreen(paste("Welcome to the Go-No Go Task", id,"!\nPress Enter to continue."), cex=1.3)
+  draw_screen(paste("Welcome to the Go-No Go Task", id,"!\nPress Enter to continue."), cex = 1.3)
   readline()
-  drawScreen(paste("Instructions \nIn this task, you will see two types of stimuli,", stimuli[1], "and\n", stimuli[2], ". When you see", stimuli[1], "you should respond as quickly as\npossible by pressing the space bar. When you see", stimuli[2], "you should\nnot respond (do not press any key). You should try to be as fast and accurate\nas possible. Press Enter to continue."),
-             cex=0.75)
+  draw_screen(paste("Instructions \nIn this task, you will see two types of stimuli,", stimuli[1], "and\n", stimuli[2], ". When you see", stimuli[1], "you should respond as quickly as\npossible by pressing the space bar. When you see", stimuli[2], "you should\nnot respond (do not press any key). You should try to be as fast and accurate\nas possible. Press Enter to continue."),
+             cex = 0.75)
   readline()
-  drawScreen(paste("The task consists of", n_block, "blocks, each consisting of", n_trial, "trials.\nThere is is a break between each pair of blocks.\nBefore starting the task, there is one practice block of 10 trials.\n Press Enter to start the practice trials."),
-             cex=0.75)
+  draw_screen(paste("The task consists of", n_block, "blocks, each consisting of", n_trial, "trials.\nThere is is a break between each pair of blocks.\nBefore starting the task, there is one practice block of 10 trials.\n Press Enter to start the practice trials."),
+             cex = 0.75)
   readline()
-  drawScreen(""); Sys.sleep(0.5)
+  draw_screen("")
+  Sys.sleep(0.5)
   
   # Practice trials
-  drawScreen("Practice trials"); Sys.sleep(1)
-  drawScreen("Countdown: 3"); Sys.sleep(1)
-  drawScreen("Countdown: 2"); Sys.sleep(1)
-  drawScreen("Countdown: 1"); Sys.sleep(1)
-  drawScreen(""); Sys.sleep(0.5)
+  draw_screen("Practice trials")
+  Sys.sleep(1)
+  draw_screen("Countdown: 3")
+  Sys.sleep(1)
+  draw_screen("Countdown: 2")
+  Sys.sleep(1)
+  draw_screen("Countdown: 1")
+  Sys.sleep(1)
+  draw_screen("")
+  Sys.sleep(0.5)
   for (p in 1:10) {
-    drawScreen(practice[p], 3)
+    draw_screen("")
+    Sys.sleep(0.1)
+    draw_screen("+", 3)
+    Sys.sleep(0.4)
+    draw_screen("")
+    Sys.sleep(0.1)
+    draw_screen(practice[p], 3)
     rrt(choiceKeys = c(" "), interval = inter)
-    drawScreen(""); Sys.sleep(0.3)
   }
-  drawScreen("End of practice trials.\nPress Enter to continue on to the task.",
-             cex=1)
+  draw_screen("End of practice trials.\nPress Enter to continue on to the task.",
+             cex = 1)
   readline()
   
   # The for loops
   for (j in 1:n_block) {
-    drawScreen(paste("Block", j)); Sys.sleep(1)
-    drawScreen("Countdown: 3"); Sys.sleep(1)
-    drawScreen("Countdown: 2"); Sys.sleep(1)
-    drawScreen("Countdown: 1"); Sys.sleep(1)
-    drawScreen(""); Sys.sleep(0.5)
+    draw_screen(paste("Block", j))
+    Sys.sleep(1)
+    draw_screen("Countdown: 3")
+    Sys.sleep(1)
+    draw_screen("Countdown: 2")
+    Sys.sleep(1)
+    draw_screen("Countdown: 1")
+    Sys.sleep(1)
+    draw_screen("")
+    Sys.sleep(0.5)
     for (i in 1:n_trial) {
-      drawScreen(all_data[[j]][i,"stimulus"], 3)
-      all_data[[j]][i,c("response", "rt")] <- rrt(choiceKeys = c(" "), 
+      draw_screen("")
+      Sys.sleep(0.1)
+      draw_screen("+", 3)
+      Sys.sleep(0.4)
+      draw_screen("")
+      Sys.sleep(0.1)
+      draw_screen(all_data[[j]][i, "stimulus"], 3)
+      all_data[[j]][i, c("response", "rt")] <- rrt(choiceKeys = c(" "), 
                                                   interval = inter)
-      drawScreen(""); Sys.sleep(0.3)
     }
-    drawScreen(paste("End of Block", j, "!\n Press Enter to continue."),
-               cex=1)
+    draw_screen(paste("End of Block", j, "!\n Press Enter to continue."),
+               cex = 1)
     readline()
   }
   
   # End screen
-  drawScreen(paste("You finished the task. Thank you for participating",id,"!"), cex=1)
+  draw_screen(paste("You finished the task. Thank you for participating,",id,"!"), cex = 1)
   
   # Bind the datasets
   for (k in 1:(length(all_data)-1)) {
     all_data[[k+1]] <- rbind(all_data[[k]], all_data[[k+1]])
   }
   data <- all_data[[length(all_data)]]
-  
+
   # Update the dataset
-  for (rows in 1:nrow(data)) {
-    if (data[rows, "stimulus"] == stimuli[1] && data[rows, "response"] == " ") {
-      data[rows, "correct"] <- 1
-      data[rows, "SDT"] <- "hit"
-    } else if (data[rows, "stimulus"] == stimuli[2] && data[rows, "response"] == " ") {
-      data[rows, "correct"] <- 0
-      data[rows, "SDT"] <- "falsealarm"
-    } else if (data[rows, "stimulus"] == stimuli[1] && data[rows, "response"] != " ") {
-      data[rows, "correct"] <- 0
-      data[rows, "SDT"] <- "miss"
-    } else {
-      data[rows, "correct"] <- 1
-      data[rows, "SDT"] <- "correctrejection"
-    }
-  }
-  
-  data$rt <- as.numeric(data$rt)
-  for (rows in 1:nrow(data)) {
-    if (data$rt[rows] == 100) {
-      data$rt[rows] <- NA
-    }
-  }
-  
-  for (rows in 1:nrow(data)) {
-    if (data$response[rows] == " ") {
-      data$response[rows] <- "space"
-    }
-  }
-  
-  for (rows in 1:nrow(data)) {
-    if (!is.na(data$rt[rows]) && data$rt[rows] > mean_error) { # think about the second condition
-      data[rows, "rt"] <- data[rows, "rt"]-mean_error
-    }
-  }
-  
+  data <- update_data(data, stimuli = stimuli)
   print(data)
 }
 
@@ -161,3 +148,4 @@ gonogo <- function(id, n_trial=40, n_block=4, stimuli=c("A", "X"), inter=0.6,
 # function for detecting unrealistic reaction times after data set is done? / message?
 # function for changing the data set (last bit of code)? 
 # change all documentation + testing
+# delete the rrt_mean_error function

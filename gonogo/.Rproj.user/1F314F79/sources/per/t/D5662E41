@@ -3,7 +3,7 @@
     "path": "~/GitHub/theprojectofmilla/gonogo/R/main.R",
     "project_path": "R/main.R",
     "type": "r_source",
-    "hash": "3545905134",
+    "hash": "1476110494",
     "contents": "",
     "dirty": false,
     "created": 1653639552006.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "149,5",
-        "scrollLine": "146"
+        "cursorPosition": "163,36",
+        "scrollLine": "147"
     },
     "folds": "",
-    "lastKnownWriteTime": 1654008825,
+    "lastKnownWriteTime": 1654009333,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1654008825328,
+    "last_content_update": 1654009333723,
     "read_only": false,
     "read_only_alternatives": []
 }

@@ -161,3 +161,4 @@ gonogo <- function(id, n_trial=40, n_block=4, stimuli=c("A", "X"), inter=0.6,
 # function for detecting unrealistic reaction times after data set is done? / message?
 # function for changing the data set (last bit of code)? 
 # change all documentation + testing
+# delete the rrt_mean_error function

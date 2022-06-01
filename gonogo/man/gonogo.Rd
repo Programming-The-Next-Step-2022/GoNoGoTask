@@ -5,21 +5,30 @@
 \alias{gonogo}
 \title{This package contains the Go-No Go Task.}
 \usage{
-gonogo(id, n_trial, stimuli = c("A", "X"), inter = 0.5, prb = c(0.75, 0.25))
+gonogo(
+  id,
+  n_trial = 40,
+  n_block = 4,
+  stimuli = c("A", "X"),
+  inter = 0.6,
+  prb = c(0.75, 0.25)
+)
 }
 \arguments{
-\item{id}{Either a character string specifying the participant's name, or a numeric vector of length 1 specifying the participant's id number}
+\item{id}{Either a character vector of length 1 specifying the participant's name, or a numeric vector of length 1 specifying a unique id number}
 
-\item{n_trial}{Number of trials (numeric vector of length 1)}
+\item{n_trial}{A numeric vector of length 1 specifying the number of trials per block (default is 40)}
 
-\item{stimuli}{A character vector of length 2: first element specifies the 'go' element, second stimulus specifies the 'no go' stimuls (default is c("A", "X"))}
+\item{n_block}{A numeric vector of length 1 specifying the number of blocks (default is 4)}
 
-\item{inter}{Length of each trial in seconds (numeric vector of length 1) (default is 0.6)}
+\item{stimuli}{A character vector of length 2 specifying the Go stimulus and the No Go stimulus (in that order; default is A and X)}
 
-\item{prb}{A numeric vector of length 2 specifying the probability weights for the stimuli (default is c(0.5, 0.5))}
+\item{inter}{A numeric vector of length 1 specifying the length of each trial in seconds (default is 0.6)}
+
+\item{prb}{A numeric vector of length 2 specifying the probability weights for the Go stimulus and No Go stimulus (in that order; default is 0.75 and 0.25), must add up to 1}
 }
 \value{
-A dataframe consisting of \emph{n_trial} rows and six columns: \emph{id} (participant's name or numeric id),  \emph{response} (response key used on the trial),  \emph{correct} (1=correct, 0=incorrect),  \emph{SDT} (responses categorised according to Signal Detection Theory),  \emph{rt} (reaction time), and  \emph{stimulus} (the stimulus shown on the trial)
+A dataframe consisting of \emph{n_trial*n_block} rows and seven columns: \emph{id} (participant's name or numeric id),  \emph{response} (response key used on the trial),  \emph{correct} (1=correct, 0=incorrect),  \emph{SDT} (responses categorized according to Signal Detection Theory),  \emph{rt} (reaction time in seconds),  \emph{stimulus} (the stimulus shown on the trial), and \emph{block} (the number of the block)
 }
 \description{
 The package has x functions.
@@ -29,6 +38,3 @@ The package has x functions.
 \emph{validate_user_response} validates the user's response.
 }
 
-\examples{
-p1_data <- gonogo(id = "p1", n_trial = 50, stimuli = c("T", "S"), inter = 0.6, prb = c(0.7, 0.3))
-}
