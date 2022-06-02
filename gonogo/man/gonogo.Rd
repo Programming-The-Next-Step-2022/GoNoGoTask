@@ -14,7 +14,7 @@ the output file.
 \emph{play_gonogo} contains the Go-No Go task.
 }
 
-\section{Check reaction times}{
+\section{Check the reaction times in the output data}{
 
 \emph{check_rt} checks the output file for unusual values in the
 reaction times

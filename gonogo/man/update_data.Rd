@@ -4,7 +4,7 @@
 \alias{update_data}
 \title{Update the Go-No Go data within the function}
 \usage{
-update_data(data, stimuli = stimuli, mean_error = 0.0334282)
+update_data(data, stimuli = stimuli, mean_error = 0.033)
 }
 \arguments{
 \item{data}{The dataframe within the \emph{play_gonogo} function in

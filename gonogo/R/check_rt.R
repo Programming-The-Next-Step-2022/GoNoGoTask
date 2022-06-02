@@ -2,7 +2,8 @@
 #' 
 #' The \emph{check_rt} function helps spot unusual patterns in your
 #' reaction time data by pointing out unusually long distances between
-#' sorted observations.
+#' sorted observations. It also allows to check for suspiciously small
+#' reaction times.
 #'
 #' @param data The output from gonogo()
 #' @param ratio The ratio of the distance between any two (sorted) 
@@ -10,6 +11,7 @@
 #'              the user is notified when there is a distance between 
 #'              any two sorted data points that is greater than one 
 #'              third of the range of the data.
+#' @param min The minimum reaction time threshold (in seconds) to check for
 #'
 #' @return Returns tips for processing the reaction times.
 #' @export
@@ -18,8 +20,8 @@
 #'          please see \href{https://doi.org/10.3389/fpsyg.2021.675558}{article}.
 #'
 #' @examples
-#' check_rt(data, ratio = 1/4)
-check_rt <- function(data, ratio = 1/3) {
+#' check_rt(data, ratio = 1/4, min = 0.3)
+check_rt <- function(data, ratio = 1/3, min = 0.2) {
    
    # Create a threshold based on the ratio
    threshold <- ratio * abs(range(data$rt, na.rm = TRUE)[1] - 
@@ -31,22 +33,25 @@ check_rt <- function(data, ratio = 1/3) {
     dist[i] <- abs(sort(data$rt)[i+1] - sort(data$rt)[i])
   }
   
-  # Notify of possible gaps in the data
-  if (sum(dist >= threshold) > 0) {
-    print(paste("There are observations in your reaction times that are
-                unusually far from each other: the ratio of the distance
-                to the range is greater than", ratio,". A potential 
-                threshold to consider for removing unusually short 
-                reaction times is", round(threshold, 3), ". You can 
-                take a closer look at the distribution of the reaction 
-                times below:"))
+  # Notify of possible gaps and small min values in the data
+  if (sum(dist >= threshold) == 1) {
+    print(paste0("There are observations in your reaction times that are unusually far from each other: the ratio of the distance to the range is greater than ", round(ratio, 2),". This is problematic as it means that your data form two clusters, one of which likely consists of unrealistically small reaction times. These are typical in Go-No Go data as responses that are too slow tend to leak into the next trial and appear as extremely small reaction times on that trial. A potential threshold to consider for removing unusually short reaction times is ", round(threshold, 3), ". You can take a closer look at the distribution of the reaction times here:"))
     hist(data$rt, breaks = 20, col = "lightblue", 
          main = "Reaction Times", xlab = NULL)
-  } else {
-    print(paste("There are no observations in your reaction times that 
-                are unsually far from each other according to the 
-                ratio provided."))
+    if (min(data[, "rt"]) <= min) {
+      print(paste0("The minimum of your reaction time data is equal to or below ", min, ". Specifically, there are ", sum(data[, "rt"] <= min)," observations below that threshold. Consider omitting these observations from your data."))
+    }
+  } else if (sum(dist >= threshold) > 1) {
+    print(paste0("There are multiple gaps in your reaction time data, meaning that they form more than two clusters that are further than ", threshold, " from each other. Take a look at the distribution of your data below:"))
+    hist(data$rt, breaks = 20, col = "lightblue", 
+         main = "Reaction Times", xlab = NULL)
+    if (min(data[, "rt"]) <= min) {
+      print(paste0("The minimum of your reaction time data is equal to or below ", min, ". Specifically, there are ", sum(data[, "rt"] <= min)," observations below that threshold. Consider omitting these observations from your data."))
+      }
+  } else if (sum(dist >= threshold) == 0) {
+    print(paste0("There are no gaps in your reaction time data according to the ", ratio, " ratio."))
+    if (min(data[, "rt"]) <= min) {
+      print(paste0("The minimum of your reaction time data is equal to or below ", min, ". Specifically, there are ", sum(data[, "rt"] <= min)," observations below that threshold. Consider omitting these observations from your data."))
+    }
   }
-  
 }
-

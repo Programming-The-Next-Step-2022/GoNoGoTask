@@ -29,7 +29,21 @@
 #'
 #' @examples
 #' update_data(data = data, stimuli = stimuli)
-update_data <- function(data, stimuli = stimuli, mean_error = 0.0334282) {
+update_data <- function(data, stimuli = stimuli, mean_error = 0.033) {
+  
+  # Check format and length of arguments
+  if (class(data) != "data.frame" || !("response" %in% names(data)) ||
+      !("rt" %in% names(data)) || !("stimulus" %in% names(data)) ||
+      !("correct" %in% names(data)) || !("SDT" %in% names(data)) ||
+      nrow(data) >= 1) {
+    stop("data must be a dataframe containing at least 1 row and the following columns: response, rt, stimulus, correct, and SDT")
+  }
+  if (class(stimuli) != "character" || length(stimuli) != 2) {
+    stop("stimuli must be a character vector of length 2")
+  }
+  if (class(mean_error) != "numeric" || length(mean_error) != 1) {
+    stop("mean_error must be a numeric vector of length 1")
+  }
   
   # Replace " " with "space"
   for (i in 1:nrow(data)) {
@@ -42,7 +56,7 @@ update_data <- function(data, stimuli = stimuli, mean_error = 0.0334282) {
   # from the reaction times for increased accuracy
   data$rt <- as.numeric(data$rt)
   for (i in 1:nrow(data)) {
-    if (!is.na(data$rt[i])) { # think about the second condition
+    if (!is.na(data$rt[i])) {
       data[i, "rt"] <- data[i, "rt"] - mean_error
     }
   }

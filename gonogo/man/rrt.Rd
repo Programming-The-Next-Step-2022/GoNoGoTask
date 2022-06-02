@@ -4,10 +4,10 @@
 \alias{rrt}
 \title{Calculates the reaction time for pressing a key within a time interval}
 \usage{
-rrt(choiceKeys = c(" "), interval = 0.6)
+rrt(choice_keys = c(" "), interval = 0.6)
 }
 \arguments{
-\item{choiceKeys}{The key(s) for which reaction time is recorded
+\item{choice_keys}{The key(s) for which reaction time is recorded
 (default is the space bar)}
 
 \item{interval}{The interval within which the reaction time is recorded;
@@ -23,5 +23,5 @@ rt (either reaction time in seconds or a missing value)
 Calculates the reaction time for pressing a key within a time interval
 }
 \examples{
-rrt(choiceKeys = c(" "), interval = 1.5)
+rrt(choice_keys = c(" "), interval = 1.5)
 }
