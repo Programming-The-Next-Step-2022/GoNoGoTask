@@ -11,7 +11,8 @@
 #' @export
 #'
 #' @examples
-gonogo <- function(id, n_trial = 40, n_block = 4, stimuli = c("A", "X"), 
+#' data_p1 <- play_gonogo(id = "p1", n_trial = 40, n_block = 4)
+play_gonogo <- function(id, n_trial = 40, n_block = 4, stimuli = c("A", "X"), 
                    inter = 0.6, prb = c(0.75, 0.25)) {
   
   # Check class and length of arguments
@@ -139,13 +140,3 @@ gonogo <- function(id, n_trial = 40, n_block = 4, stimuli = c("A", "X"),
   data <- update_data(data, stimuli = stimuli)
   print(data)
 }
-
-
-# Ideas?
-# can you break up the function into smaller bits?
-# make code prettier
-# specify what rt=NA means / how it works
-# function for detecting unrealistic reaction times after data set is done? / message?
-# function for changing the data set (last bit of code)? 
-# change all documentation + testing
-# delete the rrt_mean_error function

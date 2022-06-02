@@ -17,7 +17,7 @@ update_data <- function(data, stimuli = stimuli) {
   
   # Subtract the mean error (time it takes to run the function rrt() from a
   # simulation of 1000 trials) from the reaction times for increased accuracy
-  mean_error <- 0.02742448
+  mean_error <- 0.6334282
   data$rt <- as.numeric(data$rt)
   for (i in 1:nrow(data)) {
     if (!is.na(data$rt[i])) { # think about the second condition
@@ -47,3 +47,12 @@ update_data <- function(data, stimuli = stimuli) {
   return(data)
 }
 
+x <- c()
+for (i in 1:5000) {
+  start <- Sys.time()
+  rrt()
+  finish <- Sys.time()
+  x[i] <- (finish-start)[[1]]
+}
+x <- x-0.6
+mean(x)

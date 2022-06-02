@@ -1,9 +1,15 @@
 #' This package contains the Go-No Go Task.
 #'
-#' The package has x functions.
+#' The package has two functions, one to do the Go-No Go task in
+#' the console, and one to check for unusual reaction times in
+#' the output file.
 #'
-#' @section Validate user's response:
-#' \emph{validate_user_response} validates the user's response.
+#' @section Do the Go-No Go Task:
+#' \emph{play_gonogo} contains the Go-No Go task.
+#' 
+#' @section Check reaction times:
+#' \emph{check_rt} checks the output file for unusual values in the
+#' reaction times
 #'
 #' @docType package
 #' @name gonogo
