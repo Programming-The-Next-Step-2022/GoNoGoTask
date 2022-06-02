@@ -1,8 +1,14 @@
 #' Draws a screen
+#' 
+#' The \emph{draw_screen} function is a helper function for the 
+#' \emph{play_gonogo} function. It plots a screen onto which the
+#' instructions and stimuli can be plotted.
 #'
-#' @param txt A character string specifying the text to be printed on the screen
+#' @param txt A character string specifying the text to be printed on 
+#'            the screen
 #' @param cex A numeric value specifying the font size (default is 1)
-#' @param col A character string specifying the color of the text (default is black)
+#' @param col A character string specifying the color of the text 
+#'            (default is black)
 #'
 #' @return Draws a screen corresponding to the specified values
 #'
@@ -10,6 +16,7 @@
 #' draw_screen(txt = "Hello!", cex = 2, col = "red")
 draw_screen <- function(txt, cex = 1, col = "black") {
   
+  # Check that arguments are in the correct format
   if (class(txt) != "character" || length(txt) != 1) {
     stop("txt must be a character vector of length 1")
   }

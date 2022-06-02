@@ -7,17 +7,21 @@
 draw_screen(txt, cex = 1, col = "black")
 }
 \arguments{
-\item{txt}{A character string specifying the text to be printed on the screen}
+\item{txt}{A character string specifying the text to be printed on
+the screen}
 
 \item{cex}{A numeric value specifying the font size (default is 1)}
 
-\item{col}{A character string specifying the color of the text (default is black)}
+\item{col}{A character string specifying the color of the text
+(default is black)}
 }
 \value{
 Draws a screen corresponding to the specified values
 }
 \description{
-Draws a screen
+The \emph{draw_screen} function is a helper function for the
+\emph{play_gonogo} function. It plots a screen onto which the
+instructions and stimuli can be plotted.
 }
 \examples{
 draw_screen(txt = "Hello!", cex = 2, col = "red")

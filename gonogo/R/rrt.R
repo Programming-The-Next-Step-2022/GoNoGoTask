@@ -1,9 +1,15 @@
 #' Calculates the reaction time for pressing a key within a time interval
 #'
-#' @param choiceKeys The key(s) for which reaction time is recorded (default is the spacebar)
-#' @param interval The interval within which the reaction time is recorded; if the key is not pressed within the interval, response is recorded as none and reaction time as a missing value (default is 0.6 seconds)
+#' @param choiceKeys The key(s) for which reaction time is recorded 
+#'                   (default is the space bar)
+#'                   
+#' @param interval The interval within which the reaction time is recorded;
+#'                 if the key is not pressed within the interval, response 
+#'                 is recorded as none and reaction time as a missing value
+#'                 (default is 0.6 seconds)
 #'
-#' @return The response (either the choice key or "none"), and the rt (either reaction time in seconds or a missing value)
+#' @return Returns the response (either the choice key or "none"), and the 
+#'         rt (either reaction time in seconds or a missing value)
 #'
 #' @examples
 #' rrt(choiceKeys = c(" "), interval = 1.5)

@@ -7,12 +7,17 @@
 rrt(choiceKeys = c(" "), interval = 0.6)
 }
 \arguments{
-\item{choiceKeys}{The key(s) for which reaction time is recorded (default is the spacebar)}
+\item{choiceKeys}{The key(s) for which reaction time is recorded
+(default is the space bar)}
 
-\item{interval}{The interval within which the reaction time is recorded; if the key is not pressed within the interval, response is recorded as none and reaction time as a missing value (default is 0.6 seconds)}
+\item{interval}{The interval within which the reaction time is recorded;
+if the key is not pressed within the interval, response
+is recorded as none and reaction time as a missing value
+(default is 0.6 seconds)}
 }
 \value{
-The response (either the choice key or "none"), and the rt (either reaction time in seconds or a missing value)
+Returns the response (either the choice key or "none"), and the
+rt (either reaction time in seconds or a missing value)
 }
 \description{
 Calculates the reaction time for pressing a key within a time interval

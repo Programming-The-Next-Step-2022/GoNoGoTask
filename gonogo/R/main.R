@@ -1,17 +1,41 @@
 #' The Go-No Go Task
+#' 
+#' The \emph{play_gonogo} function lets you do the Go-No Go Task in 
+#' your R console. 
 #'
-#' @param id Either a character vector of length 1 specifying the participant's name, or a numeric vector of length 1 specifying a unique id number
-#' @param n_trial A numeric vector of length 1 specifying the number of trials per block (default is 40)
-#' @param n_block A numeric vector of length 1 specifying the number of blocks (default is 4)
-#' @param stimuli A character vector of length 2 specifying the Go stimulus and the No Go stimulus (in that order; default is A and X)
-#' @param inter A numeric vector of length 1 specifying the length of each trial in seconds (default is 0.6)
-#' @param prb A numeric vector of length 2 specifying the probability weights for the Go stimulus and No Go stimulus (in that order; default is 0.75 and 0.25), must add up to 1
+#' @param id Either a character vector of length 1 specifying the 
+#'           participant's name, or a numeric vector of length 1 
+#'           specifying a unique id number
+#' @param n_trial A numeric vector of length 1 specifying the number 
+#'                of trials per block (default is 40)
+#' @param n_block A numeric vector of length 1 specifying the number 
+#'                of blocks (default is 4)
+#' @param stimuli A character vector of length 2 specifying the Go 
+#'                stimulus and the No Go stimulus (in that order; 
+#'                default is A and X)
+#' @param inter A numeric vector of length 1 specifying the length of
+#'              each trial in seconds (default is 0.6)
+#' @param prb A numeric vector of length 2 specifying the probability 
+#'            weights for the Go stimulus and No Go stimulus (in that 
+#'            order; default is 0.75 and 0.25), must add up to 1
 #'
-#' @return A dataframe consisting of \emph{n_trial*n_block} rows and seven columns: \emph{id} (participant's name or numeric id),  \emph{response} (response key used on the trial),  \emph{correct} (1=correct, 0=incorrect),  \emph{SDT} (responses categorized according to Signal Detection Theory),  \emph{rt} (reaction time in seconds),  \emph{stimulus} (the stimulus shown on the trial), and \emph{block} (the number of the block)
+#' @return A dataframe consisting of \emph{n_trial*n_block} rows and 
+#'         seven columns: \emph{id} (participant's name or numeric id),
+#'         \emph{response} (response key used on the trial),
+#'         \emph{correct} (1=correct, 0=incorrect),  \emph{SDT} 
+#'         (responses categorized according to Signal Detection Theory),
+#'         \emph{rt} (reaction time in seconds),  \emph{stimulus} 
+#'         (the stimulus shown on the trial), and \emph{block} (the 
+#'         number of the block)
+#'
 #' @export
+#' 
+#' @details For more details about the Go-No Go Task, see
+#'          \href{https://en.wikipedia.org/wiki/Go/no_go}{article}.
+#'          
 #'
 #' @examples
-#' data_p1 <- play_gonogo(id = "p1", n_trial = 40, n_block = 4)
+#' data_p1 <- play_gonogo(id = "p1", n_trial = 20, n_block = 4)
 play_gonogo <- function(id, n_trial = 40, n_block = 4, stimuli = c("A", "X"), 
                    inter = 0.6, prb = c(0.75, 0.25)) {
   
@@ -63,7 +87,8 @@ play_gonogo <- function(id, n_trial = 40, n_block = 4, stimuli = c("A", "X"),
   }
   
   # Intro screens
-  draw_screen(paste("Welcome to the Go-No Go Task", id,"!\nPress Enter to continue."), cex = 1.3)
+  draw_screen(paste("Welcome to the Go-No Go Task", id,
+                    "!\nPress Enter to continue."), cex = 1.3)
   readline()
   draw_screen(paste("Instructions \nIn this task, you will see two types of stimuli,", stimuli[1], "and\n", stimuli[2], ". When you see", stimuli[1], "you should respond as quickly as\npossible by pressing the space bar. When you see", stimuli[2], "you should\nnot respond (do not press any key). You should try to be as fast and accurate\nas possible. Press Enter to continue."),
              cex = 0.75)
@@ -112,6 +137,7 @@ play_gonogo <- function(id, n_trial = 40, n_block = 4, stimuli = c("A", "X"),
     draw_screen("")
     Sys.sleep(0.5)
     for (i in 1:n_trial) {
+      print(i)
       draw_screen("")
       Sys.sleep(0.1)
       draw_screen("+", 3)

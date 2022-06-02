@@ -14,24 +14,45 @@ play_gonogo(
 )
 }
 \arguments{
-\item{id}{Either a character vector of length 1 specifying the participant's name, or a numeric vector of length 1 specifying a unique id number}
+\item{id}{Either a character vector of length 1 specifying the
+participant's name, or a numeric vector of length 1
+specifying a unique id number}
 
-\item{n_trial}{A numeric vector of length 1 specifying the number of trials per block (default is 40)}
+\item{n_trial}{A numeric vector of length 1 specifying the number
+of trials per block (default is 40)}
 
-\item{n_block}{A numeric vector of length 1 specifying the number of blocks (default is 4)}
+\item{n_block}{A numeric vector of length 1 specifying the number
+of blocks (default is 4)}
 
-\item{stimuli}{A character vector of length 2 specifying the Go stimulus and the No Go stimulus (in that order; default is A and X)}
+\item{stimuli}{A character vector of length 2 specifying the Go
+stimulus and the No Go stimulus (in that order;
+default is A and X)}
 
-\item{inter}{A numeric vector of length 1 specifying the length of each trial in seconds (default is 0.6)}
+\item{inter}{A numeric vector of length 1 specifying the length of
+each trial in seconds (default is 0.6)}
 
-\item{prb}{A numeric vector of length 2 specifying the probability weights for the Go stimulus and No Go stimulus (in that order; default is 0.75 and 0.25), must add up to 1}
+\item{prb}{A numeric vector of length 2 specifying the probability
+weights for the Go stimulus and No Go stimulus (in that
+order; default is 0.75 and 0.25), must add up to 1}
 }
 \value{
-A dataframe consisting of \emph{n_trial*n_block} rows and seven columns: \emph{id} (participant's name or numeric id),  \emph{response} (response key used on the trial),  \emph{correct} (1=correct, 0=incorrect),  \emph{SDT} (responses categorized according to Signal Detection Theory),  \emph{rt} (reaction time in seconds),  \emph{stimulus} (the stimulus shown on the trial), and \emph{block} (the number of the block)
+A dataframe consisting of \emph{n_trial*n_block} rows and
+seven columns: \emph{id} (participant's name or numeric id),
+\emph{response} (response key used on the trial),
+\emph{correct} (1=correct, 0=incorrect),  \emph{SDT}
+(responses categorized according to Signal Detection Theory),
+\emph{rt} (reaction time in seconds),  \emph{stimulus}
+(the stimulus shown on the trial), and \emph{block} (the
+number of the block)
 }
 \description{
-The Go-No Go Task
+The \emph{play_gonogo} function lets you do the Go-No Go Task in
+your R console.
+}
+\details{
+For more details about the Go-No Go Task, see
+\href{https://en.wikipedia.org/wiki/Go/no_go}{article}.
 }
 \examples{
-data_p1 <- play_gonogo(id = "p1", n_trial = 40, n_block = 4)
+data_p1 <- play_gonogo(id = "p1", n_trial = 20, n_block = 4)
 }

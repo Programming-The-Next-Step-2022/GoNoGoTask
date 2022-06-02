@@ -4,16 +4,39 @@
 \alias{update_data}
 \title{Update the Go-No Go data within the function}
 \usage{
-update_data(data, stimuli = stimuli)
+update_data(data, stimuli = stimuli, mean_error = 0.0334282)
 }
 \arguments{
-\item{data}{The dataframe in the unedited format}
+\item{data}{The dataframe within the \emph{play_gonogo} function in
+the unedited format}
 
-\item{stimuli}{The Go stimulus and No Go stimulus in a character vector of length 2, as specified in the gonogo() function}
+\item{stimuli}{The Go stimulus and No Go stimulus in a character vector
+of length 2, as specified in the play_gonogo() function}
+
+\item{mean_error}{The mean error (average time it takes to run the
+\emph{rrt}) function). The default is 0.0334282, but
+this might vary between devices. See Details for more
+information.}
 }
 \value{
-The updated dataframe with six columns: \emph{n_trial*n_block} rows and seven columns: \emph{id} (participant's name or numeric id),  \emph{response} (response key used on the trial),  \emph{correct} (1=correct, 0=incorrect),  \emph{SDT} (responses categorized according to Signal Detection Theory),  \emph{rt} (reaction time in seconds),  \emph{stimulus} (the stimulus shown on the trial), and \emph{block} (the number of the block)
+The updated dataframe with six columns: \emph{n_trial*n_block}
+rows and seven columns: \emph{id} (participant's name or
+numeric id),  \emph{response} (response key used on the trial),
+\emph{correct} (1=correct, 0=incorrect),  \emph{SDT} (responses
+categorized according to Signal Detection Theory),  \emph{rt}
+(reaction time in seconds),  \emph{stimulus} (the stimulus shown
+on the trial), and \emph{block} (the number of the block)
 }
 \description{
-Update the Go-No Go data within the function
+The \emph{update_data} function is a helper function for the
+\emph{play_gonogo} function. It takes the raw data and transforms
+it into a more user-friendly format.
+}
+\details{
+It should be noted that, for optimal accuracy, the mean error
+(average time it takes to run the \emph{rrt} function) should
+be calculated for each device used as it might vary.
+}
+\examples{
+update_data(data = data, stimuli = stimuli)
 }
