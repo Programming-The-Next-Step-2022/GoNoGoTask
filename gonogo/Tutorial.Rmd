@@ -7,7 +7,7 @@ output: pdf_document
 
 # Go-No Go Task Tutorial
 
-This tutorial will demonstrate how the *gonogo* package is used. The package contains some helper functions alongside the main function, gonogo(). 
+This tutorial will demonstrate how the *gonogo* package is used. The package contains two functions: play_gonogo() for playing the Go-No Go Task, and check_rt() for checking for irregularities in the output data, specifically the reaction time column. 
 
 ## Go-No Go Task in Short
 
@@ -17,7 +17,7 @@ There are two parameters in the experimental design that are especially importan
 
 ## How to Use the gonogo() Function
 
-The following code gives an example of how the gonogo() function can be used.
+The following code gives an example of how the play_gonogo() function can be used.
 
 ```{r The gonogo() function, eval=FALSE}
 
@@ -27,6 +27,7 @@ library(gonogo)
 # Run the Go-No Go Task and save the output in an object
 p1_data <- gonogo(id = "my_name", # specify participant's name or id
                   n_trial = 10, # specify number of trials
+                  n_block = 4, # specify number of blocks
                   stimuli = c("A", "X"), # specify Go and No Go stimuli (in that order)
                   inter = .7, # specify length of each trial
                   prb = c(.7, .3)) # specify the probability weights of Go and No Go
@@ -43,12 +44,13 @@ knitr::include_graphics(path = "C:/Users/Omistaja/OneDrive/Tiedostot/GitHub/thep
 
 ## How to Read the Output
 
-The gonogo() function returns a dataframe consisting of n_trial (number of trials) rows and six columns:
+The play_gonogo() function returns a dataframe consisting of n_trial*n_block (number of trials times number of blocks) rows and six columns:
 
 *id* = participant's name or id as specified 
 *response* = response key used on the trial (space when participant responded, none when no response was given)
 *correct* = whether the response was correct or not (1=correct, 0=incorrect)
-*SDT* = responses categorised according to Signal Detection Theory
-*rt* = reaction time in seconds
+*SDT* = responses categorized according to Signal Detection Theory
+*rt* = reaction time in seconds (NA when participant did not respond during that trial)
 *stimulus* = the stimulus shown on the trial
+*block* = the block number
 

@@ -1,22 +1,32 @@
-#' Calculates reaction time for pressing a prespecified key
+#' Calculates the reaction time for pressing a key within a time interval
 #'
+#' @param choice_keys The key(s) for which reaction time is recorded 
+#'                   (default is the space bar)
+#'                   
+#' @param interval The interval within which the reaction time is recorded;
+#'                 if the key is not pressed within the interval, response 
+#'                 is recorded as none and reaction time as a missing value
+#'                 (default is 0.6 seconds)
 #'
-#'
-#' @param choiceKeys A character vector specifying the choice key(s) for which the reaction time is recorded
-#'
-#' @param interval A numeric vector of length 1 specifying the length of each trial in seconds (default is 1)
-#'
-#' @return Response (either choice key pressed, or NA) and reaction time in seconds (NA if choice key not pressed)
-#' @export
+#' @return Returns the response (either the choice key or "none"), and the 
+#'         rt (either reaction time in seconds or a missing value)
 #'
 #' @examples
-rrt <- function(choiceKeys=c(" "), interval = 0.6) {
+#' rrt(choice_keys = c(" "), interval = 1.5)
+rrt <- function(choice_keys = c(" "), interval = 0.6) {
+  
+  # Check class and length of arguments
+  if (class(choice_keys) != "character" || length(choice_keys) < 1) {
+    stop("choice_keys must be a character vector of length (at least) 1")
+  }
+  if (class(interval) != "numeric" || length(interval) != 1) {
+    stop("interval must be a numeric vector of length 1")
+  }
+  
   dynamic_readline <- function() {
-    # Create a counter variable that breaks the loop
     x <- 0
     while (rstudioapi::isAvailable()) {
       input <- rstudioapi::getConsoleEditorContext()$contents
-      # Increase counter variable
       x <- x + 1
       if (input != "") {
         rstudioapi::sendToConsole("", execute = FALSE)
@@ -28,18 +38,20 @@ rrt <- function(choiceKeys=c(" "), interval = 0.6) {
     }
     readline()
   }
-  o_rt <- Sys.time()
+  
+  rt <- Sys.time()
   repeat {
       choice <- dynamic_readline()
-    if (choice %in% choiceKeys){
-      o_rt <- Sys.time() - o_rt
+    if (choice %in% choice_keys) {
+      rt <- Sys.time() - rt
       break
     }
-    elapsed_time <- Sys.time() - o_rt
+    elapsed_time <- Sys.time() - rt
     if (elapsed_time > interval) {
-      o_rt <- 100
+      rt <- NA
       break
     }
   }
-  setNames(c(choice, o_rt), c("response", "rt"))
+  setNames(c(choice, rt), c("response", "rt"))
+  
 }
