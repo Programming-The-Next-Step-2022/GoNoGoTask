@@ -55,11 +55,11 @@ play_gonogo <- function(id, n_trial = 40, n_block = 4, stimuli = c("A", "X"),
     stop("stimuli must be a character vector of length 2")
   }
   if (class(inter) != "numeric" || length(inter) != 1 ||
-      inter > 0) {
+      inter < 0) {
     stop("inter must be a positive numeric vector of length 1")
   }
   if (class(prb) != "numeric" || length(prb) != 2 || prb[1] + prb[2] != 1
-      || prb[1] >= 0 || prb[2] >= 0) {
+      || prb[1] <= 0 || prb[2] <= 0) {
     stop("prb must be a numeric vector of length 2, and its components must be positive and add up to 1")
   }
   
@@ -118,7 +118,7 @@ play_gonogo <- function(id, n_trial = 40, n_block = 4, stimuli = c("A", "X"),
     draw_screen("")
     Sys.sleep(0.1)
     draw_screen("+", 3)
-    Sys.sleep(0.4)
+    Sys.sleep(0.6)
     draw_screen("")
     Sys.sleep(0.1)
     draw_screen(practice[p], 3)
@@ -141,7 +141,6 @@ play_gonogo <- function(id, n_trial = 40, n_block = 4, stimuli = c("A", "X"),
     draw_screen("")
     Sys.sleep(0.5)
     for (i in 1:n_trial) {
-      print(i)
       draw_screen("")
       Sys.sleep(0.1)
       draw_screen("+", 3)

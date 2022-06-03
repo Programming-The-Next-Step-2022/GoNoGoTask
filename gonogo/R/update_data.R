@@ -33,9 +33,9 @@ update_data <- function(data, stimuli = stimuli, mean_error = 0.033) {
   
   # Check format and length of arguments
   if (class(data) != "data.frame" || !("response" %in% names(data)) ||
-      !("rt" %in% names(data)) || !("stimulus" %in% names(data)) ||
-      !("correct" %in% names(data)) || !("SDT" %in% names(data)) ||
-      nrow(data) >= 1) {
+    !("rt" %in% names(data)) || !("stimulus" %in% names(data)) ||
+    !("correct" %in% names(data)) || !("SDT" %in% names(data)) ||
+      nrow(data) <= 1) {
     stop("data must be a dataframe containing at least 1 row and the following columns: response, rt, stimulus, correct, and SDT")
   }
   if (class(stimuli) != "character" || length(stimuli) != 2) {
