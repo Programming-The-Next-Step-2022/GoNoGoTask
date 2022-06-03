@@ -18,8 +18,8 @@
 #'          please see \href{https://doi.org/10.3389/fpsyg.2021.675558}{article}.
 #'
 #' @examples
-#' check_rt(data, ratio = 1/4, min = 0.3)
-check_rt <- function(data, ratio = 1/3, minimum = 0.2) {
+#' check_rt(data, ratio = 1/4)
+check_rt <- function(data, ratio = 1/3) {
    
    # Create a threshold based on the ratio
    threshold <- ratio * abs(range(data$rt, na.rm = TRUE)[1] - 

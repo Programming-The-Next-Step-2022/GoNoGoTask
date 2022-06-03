@@ -2,7 +2,9 @@
 title: "Go-No Go Tutorial"
 author: "Milla Pihlajamaki"
 date: "27 5 2022"
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 # Go-No Go Task Tutorial

@@ -4,7 +4,7 @@
 \alias{check_rt}
 \title{Check the reaction times in your data}
 \usage{
-check_rt(data, ratio = 1/3, minimum = 0.2)
+check_rt(data, ratio = 1/3)
 }
 \arguments{
 \item{data}{The output from gonogo()}
@@ -28,5 +28,5 @@ For more information about how to handle reaction time data,
 please see \href{https://doi.org/10.3389/fpsyg.2021.675558}{article}.
 }
 \examples{
-check_rt(data, ratio = 1/4, min = 0.3)
+check_rt(data, ratio = 1/4)
 }
