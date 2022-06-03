@@ -13,44 +13,115 @@ This tutorial will demonstrate how the *gonogo* package is used. The package con
 
 The Go-No Go Task is a widely used test to measure inhibitory control, a cognitive process that enables humans to cancel motor activity after its initiation. It requires the participant to perform an action given certain stimuli (Go stimuli), and inhibit that action under a different set of stimuli (No Go stimuli).
 
-There are two parameters in the experimental design that are especially important: the length of each trial and the relative proportion of the Go and No-Go trials. Fortunately, both these parameters can be easily manipulated in the gonogo() function.
+There are two parameters in the experimental design that are especially important: the length of each trial and the relative proportion of the Go and No-Go trials. Fortunately, both these parameters can be easily manipulated in the gonogo() function: length of the trial with the *inter* argument, and the relative proportion of the Go and No-Go trials with the *prb* argument.
 
-## How to Use the gonogo() Function
+In addition to these two arguments, you can specify the participant *id* (name or unique id number), *n_trial* (number of trials), *n_block* (number of blocks), and *stimuli* (the Go and No Go stimuli). 
+
+## How to Use the play_gonogo() Function
 
 The following code gives an example of how the play_gonogo() function can be used.
 
-```{r The gonogo() function, eval=FALSE}
+```{r The play_gonogo() function, eval=FALSE}
 
 # Load package
 library(gonogo)
 
 # Run the Go-No Go Task and save the output in an object
-p1_data <- gonogo(id = "my_name", # specify participant's name or id
-                  n_trial = 10, # specify number of trials
-                  n_block = 4, # specify number of blocks
-                  stimuli = c("A", "X"), # specify Go and No Go stimuli (in that order)
-                  inter = .7, # specify length of each trial
-                  prb = c(.7, .3)) # specify the probability weights of Go and No Go
-                                   # stimuli (in that order)
+p1_data <- play_gonogo(id = "p1",  # id
+                       n_trial = 5,  # number of trials
+                       n_block = 3,  # number of blocks
+                       stimuli = c("A", "X"),  # Go and No Go stimuli
+                       inter = 0.6,  # interval (length of trials)
+                       prb = c(0.8, 0.2))  # relative proportion
 
 ```
 
-```{r Print Output, echo=FALSE}
 
-knitr::include_graphics(path = "C:/Users/Omistaja/OneDrive/Tiedostot/GitHub/theprojectofmilla/gonogo/example_data.jpg")
+## Example Screens from the Task
+
+Below you can find examples of how the task looks: the welcome screen, information about the number of trials and blocks, and finally an example of how the stimuli are presented during the task.
+
+```{r Example Screens from the Task, echo=FALSE}
+
+# Welcome screen
+id <- "p1"
+draw_screen(paste0("Welcome to the Go-No Go Task ", id,
+                   "!\nPress Enter to continue."), cex = 1.3)
+
+# Information about number of trials and blocks
+n_block <- 3
+n_trial <- 5
+draw_screen(paste0("The task consists of ", n_block, " blocks, each consisting of ", n_trial, " trials.\nThere is is a break between each pair of blocks.\nBefore starting the task, there is one practice block of 10 trials.\n Press Enter to start the practice trials."),
+             cex = 0.75)
+
+# Example of how the task looks like
+draw_screen("A", 3)
+
+
+```
+
+
+
+```{r Create dataset, include=FALSE}
+
+p1_data <- data.frame(id = rep("p1", 15),
+                      response = c("none", "none", "space", "space", "none", "space", "none", "space", "space", "none", "none", "space", "none", "space", "none"),
+                      correct = c(1,1,1,1,0,0,0,1,1,1,0,1,0,1,0),
+                      SDT = c("correctrejection", "correctrejection", "hit", "hit", "miss", "falsealarm", "miss", "hit", "hit", "correctrejection", "miss", "hit", "miss", "hit", "miss"),
+                      rt = c(NA, NA, 0.47666382, 0.55146193, NA, 0.56809711, NA, -0.01646210, 0.59251689, NA, NA, -0.01505090, NA, -0.02203418, NA),
+                      stimulus = c("X", "X", "A", "A", "A", "X", "A", "A", "A", "X", "A", "A", "A", "A", "A"),
+                      block = rep(c(1, 2, 3), each = 5))
+
+```
+
+
+## What the Output data looks like
+
+```{r Show data, echo=FALSE}
+
+print(p1_data)
 
 ```
 
 
 ## How to Read the Output
 
-The play_gonogo() function returns a dataframe consisting of n_trial*n_block (number of trials times number of blocks) rows and six columns:
+The play_gonogo() function returns a dataframe consisting of n_trial*n_block (number of trials times number of blocks) rows and seven columns:
 
-*id* = participant's name or id as specified 
-*response* = response key used on the trial (space when participant responded, none when no response was given)
+
+**id** = participant's name or id as specified 
+
+**response** = response key used on the trial (space when participant responded, none when no response was given)
+
 *correct* = whether the response was correct or not (1=correct, 0=incorrect)
-*SDT* = responses categorized according to Signal Detection Theory
-*rt* = reaction time in seconds (NA when participant did not respond during that trial)
-*stimulus* = the stimulus shown on the trial
-*block* = the block number
 
+**SDT** = responses categorized according to Signal Detection Theory; [click here to read more about Signal Detection Theory](https://en.wikipedia.org/wiki/Detection_theory)
+
+**rt** = reaction time in seconds (NA when participant did not respond during that trial)
+
+**stimulus** = the stimulus shown on the trial
+
+**block** = the block number
+
+
+## The check_rt() Function
+
+It appears that there is something weird going on in the reaction time column:
+
+```{r Print Reaction Times, echo=FALSE}
+
+hist(p1_data$rt, breaks = 25, col = "lightblue", title = "Reaction times (in seconds)", xlab = NULL)
+
+```
+
+There are some observations that are very close to (or below) 0. This is the case when the participant takes too long to respond to a stimulus, and their response "leaks" into the next trial. As the function corrects for the time that it takes to run the function to gain more accurate reaction times by subtracting a constant from the reaction times, this might sometimes lead to very small or negative values.
+
+Fortunately, the gonogo package comes with a function that helps spot irregularities in reaction times: check_rt()! The check_rt() function points our unsually long distances between sorted observations in your reaction time data. It has two arguments, *data* (specify your dataframe), and *ratio* (the ratio of the longest distance between sorted data points and the range of the data). See below:
+
+```{r How to Use the check_rt() function}
+
+check_rt(data = p1_data, ratio = 1/3)
+
+```
+
+## End of the Tutorial!

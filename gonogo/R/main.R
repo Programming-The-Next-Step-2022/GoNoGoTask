@@ -144,7 +144,7 @@ play_gonogo <- function(id, n_trial = 40, n_block = 4, stimuli = c("A", "X"),
       draw_screen("")
       Sys.sleep(0.1)
       draw_screen("+", 3)
-      Sys.sleep(0.4)
+      Sys.sleep(0.6)
       draw_screen("")
       Sys.sleep(0.1)
       draw_screen(all_data[[j]][i, "stimulus"], 3)

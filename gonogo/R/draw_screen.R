@@ -9,6 +9,8 @@
 #' @param cex A numeric value specifying the font size (default is 1)
 #' @param col A character string specifying the color of the text 
 #'            (default is black)
+#'            
+#' @export
 #'
 #' @return Draws a screen corresponding to the specified values
 #'

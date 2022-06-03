@@ -4,7 +4,7 @@
 \alias{check_rt}
 \title{Check the reaction times in your data}
 \usage{
-check_rt(data, ratio = 1/3, min = 0.2)
+check_rt(data, ratio = 1/3, minimum = 0.2)
 }
 \arguments{
 \item{data}{The output from gonogo()}
@@ -14,8 +14,6 @@ data points. For example, the default 1/3 means that
 the user is notified when there is a distance between
 any two sorted data points that is greater than one
 third of the range of the data.}
-
-\item{min}{The minimum reaction time threshold (in seconds) to check for}
 }
 \value{
 Returns tips for processing the reaction times.
@@ -23,8 +21,7 @@ Returns tips for processing the reaction times.
 \description{
 The \emph{check_rt} function helps spot unusual patterns in your
 reaction time data by pointing out unusually long distances between
-sorted observations. It also allows to check for suspiciously small
-reaction times.
+sorted observations.
 }
 \details{
 For more information about how to handle reaction time data,
