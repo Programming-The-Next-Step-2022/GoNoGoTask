@@ -24,7 +24,7 @@ The following code gives an example of how the play_gonogo() function can be use
 ```{r Install the Package, message=FALSE, warning=FALSE}
 
 # Load package
-devtools::install_github("Programming-The-Next-Step-2022/GoNoGoTask/gonogo")
+# devtools::install_github("Programming-The-Next-Step-2022/GoNoGoTask/gonogo")
 library(gonogo)
 
 ```
@@ -114,7 +114,7 @@ The play_gonogo() function returns a dataframe consisting of n_trial*n_block (nu
 
 It appears that there is something weird going on in the reaction time column:
 
-```{r Print Reaction Times, echo=FALSE}
+```{r Print Reaction Times, echo=FALSE, message=FALSE, warning=FALSE}
 
 hist(p1_data$rt, breaks = 25, col = "lightblue", title = "Reaction times (in seconds)", xlab = NULL)
 
