@@ -21,10 +21,16 @@ In addition to these two arguments, you can specify the participant *id* (name o
 
 The following code gives an example of how the play_gonogo() function can be used.
 
-```{r The play_gonogo() function, eval=FALSE}
+```{r Install the Package, message=FALSE, warning=FALSE}
 
 # Load package
+devtools::install_github("Programming-The-Next-Step-2022/GoNoGoTask/gonogo")
 library(gonogo)
+
+```
+
+
+```{r The play_gonogo() function, eval=FALSE}
 
 # Run the Go-No Go Task and save the output in an object
 p1_data <- play_gonogo(id = "p1",  # id
@@ -41,7 +47,7 @@ p1_data <- play_gonogo(id = "p1",  # id
 
 Below you can find examples of how the task looks: the welcome screen, information about the number of trials and blocks, and finally an example of how the stimuli are presented during the task.
 
-```{r Example Screens from the Task, echo=FALSE}
+```{r Example Screens from the Task, echo=FALSE, height = 0.8}
 
 # Welcome screen
 id <- "p1"
@@ -75,7 +81,7 @@ p1_data <- data.frame(id = rep("p1", 15),
 ```
 
 
-## What the Output data looks like
+## What the Output Data Looks Like
 
 ```{r Show data, echo=FALSE}
 
